@@ -9,8 +9,7 @@ import 'package:todo_jbc/utils/app_colors.dart';
 import 'select_color_widget.dart';
 // import 'package:todo_jbc/utils/app_colors.dart';
 
-showTodoDialog(BuildContext context) {
-  TextEditingController todoController = TextEditingController();
+showTodoDialog(BuildContext context, TextEditingController todoController) {
   final SelectColorController selectColorController =
       Get.put(SelectColorController());
   return AlertDialog(

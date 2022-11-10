@@ -8,9 +8,15 @@ import 'package:todo_jbc/utils/app_colors.dart';
 
 import '../widgets/todo_list_widget.dart';
 
-class LandingScren extends StatelessWidget {
+class LandingScren extends StatefulWidget {
   const LandingScren({super.key});
 
+  @override
+  State<LandingScren> createState() => _LandingScrenState();
+}
+
+class _LandingScrenState extends State<LandingScren> {
+  TextEditingController todoController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +37,7 @@ class LandingScren extends StatelessWidget {
           showDialog(
               context: context,
               builder: (BuildContext context) {
-                return showTodoDialog(context);
+                return showTodoDialog(context, todoController);
               });
         },
         label: const Text("Add Task"),
