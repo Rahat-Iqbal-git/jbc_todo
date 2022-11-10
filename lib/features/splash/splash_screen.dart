@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:todo_jbc/common/widgets/horizontal_space.dart';
+import 'package:todo_jbc/features/landing/screen/landing_screen.dart';
 import 'package:todo_jbc/features/onboard/screens/onboard_screen.dart';
 import 'package:todo_jbc/utils/app_colors.dart';
 
@@ -15,17 +16,25 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var box = GetStorage();
   @override
   void initState() {
     super.initState();
-    Timer(
-      const Duration(seconds: 4),
-      () => Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (BuildContext context) => OnboardScreen(),
-        ),
-      ),
-    );
+    Timer(const Duration(seconds: 4), () {
+      if (box.read('showOnboardScreen') == true) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (BuildContext context) => OnboardScreen(),
+          ),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (BuildContext context) => const LandingScren(),
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -54,6 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 AnimatedTextKit(
                   animatedTexts: [
                     FadeAnimatedText('JBC Todo',
+                        duration: const Duration(seconds: 1),
                         textStyle: GoogleFonts.lato(
                           textStyle: const TextStyle(
                             color: themeColor,
@@ -62,6 +72,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           ),
                         )),
                     FadeAnimatedText('JBC 全て',
+                        duration: const Duration(seconds: 1),
                         textStyle: GoogleFonts.lato(
                           textStyle: const TextStyle(
                             color: themeColor,

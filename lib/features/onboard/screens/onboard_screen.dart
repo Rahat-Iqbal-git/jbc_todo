@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_onboard/flutter_onboard.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:todo_jbc/common/get_screen_height_width.dart';
+import 'package:todo_jbc/features/onboard/functions/save_onboard_getstorage.dart';
 import 'package:todo_jbc/utils/app_colors.dart';
 
 class OnboardScreen extends StatelessWidget {
@@ -74,7 +75,9 @@ class OnboardScreen extends StatelessWidget {
         ),
         //
         skipButton: TextButton(
-          onPressed: () {},
+          onPressed: () {
+            saveOnboardGetstorage();
+          },
           child: const Text(
             "Skip",
             style: TextStyle(
@@ -84,6 +87,7 @@ class OnboardScreen extends StatelessWidget {
         ),
         onDone: () {
           debugPrint('done tapped');
+          saveOnboardGetstorage();
         },
       ),
     );
