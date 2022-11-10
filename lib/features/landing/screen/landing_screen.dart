@@ -44,38 +44,40 @@ class _LandingScrenState extends State<LandingScren> {
         backgroundColor: themeColor,
         icon: const Icon(Icons.add),
       ),
-      body: ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        children: [
-          VerticalSpace(height: getHeight(context) * 2),
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.grey.shade300,
+      body: SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          children: [
+            VerticalSpace(height: getHeight(context) * 2),
+            Container(
+              padding: EdgeInsets.all(getHeight(context) * 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.grey.shade300,
+              ),
+              child: Row(
+                children: const [
+                  Icon(Icons.search),
+                  HorizontalSpace(width: 10),
+                  Text("Search in your todos"),
+                ],
+              ),
             ),
-            child: Row(
-              children: const [
-                Icon(Icons.search),
-                HorizontalSpace(width: 10),
-                Text("Search in your todos"),
-              ],
+            const VerticalSpace(height: 30),
+            Text(
+              "Your Tasks",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.grey.shade700,
+              ),
             ),
-          ),
-          const VerticalSpace(height: 30),
-          Text(
-            "Your Tasks",
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Colors.grey.shade700,
-            ),
-          ),
-          const VerticalSpace(height: 10),
-          //
-          const TodoListWidget(),
-          //
-        ],
+            const VerticalSpace(height: 10),
+            //
+            const TodoListWidget(),
+            //
+          ],
+        ),
       ),
     );
   }

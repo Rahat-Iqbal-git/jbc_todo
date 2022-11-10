@@ -3,7 +3,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 import 'package:todo_jbc/common/widgets/vertical_space.dart';
+import 'package:todo_jbc/features/todo_details/todo_details_screen.dart';
 import 'package:todo_jbc/utils/app_colors.dart';
 
 class TodoListWidget extends StatelessWidget {
@@ -48,6 +50,11 @@ class TodoListWidget extends StatelessWidget {
                       color: todoListColors[temp['color'] - 1],
                     ),
                     child: ListTile(
+                      onTap: () {
+                        Get.to(() => TodoDetailsScreen(
+                              todoData: temp,
+                            ));
+                      },
                       leading: temp['isDone'] == true
                           ? Icon(
                               Icons.check_box,
@@ -73,7 +80,9 @@ class TodoListWidget extends StatelessWidget {
               },
             );
           } else {
-            return const CircularProgressIndicator();
+            return LinearProgressIndicator(
+              color: themeColor.withOpacity(0.4),
+            );
           }
         });
   }
