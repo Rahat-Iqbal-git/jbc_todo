@@ -8,6 +8,7 @@ import 'package:todo_jbc/common/get_screen_height_width.dart';
 import 'package:todo_jbc/common/widgets/horizontal_space.dart';
 import 'package:todo_jbc/common/widgets/vertical_space.dart';
 import 'package:todo_jbc/features/landing/controller/todo_controller.dart';
+import 'package:todo_jbc/features/landing/screen/landing_screen.dart';
 import 'package:todo_jbc/features/landing/widgets/select_color_widget.dart';
 import 'package:todo_jbc/utils/app_colors.dart';
 
@@ -178,9 +179,10 @@ class _TodoDetailsScreenState extends State<TodoDetailsScreen> {
                             'title': titleField.text,
                             'color': todoController.selectedColor.value,
                             'isDone': todoController.isComplete.value,
+                            'searchKeys': getSearchKeys(titleField.text),
                           }).then(
                             (value) {
-                              Get.back();
+                              Get.offAll(() => const LandingScren());
                               Fluttertoast.showToast(
                                 msg: "Todo updated",
                               );
@@ -203,5 +205,15 @@ class _TodoDetailsScreenState extends State<TodoDetailsScreen> {
         ),
       ),
     );
+  }
+
+  getSearchKeys(String name) {
+    List<String> searchList = [];
+    String temp = "";
+    for (int i = 0; i < name.length; i++) {
+      temp = temp + name[i].toLowerCase();
+      searchList.add(temp);
+    }
+    return searchList;
   }
 }

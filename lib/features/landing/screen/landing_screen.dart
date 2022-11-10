@@ -8,6 +8,7 @@ import 'package:todo_jbc/features/landing/widgets/add_todo_dialog.dart';
 import 'package:todo_jbc/features/search/search_screen.dart';
 import 'package:todo_jbc/utils/app_colors.dart';
 
+import '../widgets/greetings_widget.dart';
 import '../widgets/todo_list_widget.dart';
 
 class LandingScren extends StatefulWidget {
@@ -54,7 +55,8 @@ class _LandingScrenState extends State<LandingScren> {
           shrinkWrap: true,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           children: [
-            VerticalSpace(height: getHeight(context) * 2),
+            VerticalSpace(height: getHeight(context) * 2.5),
+            // const GreetingsWidget(),
             InkWell(
               onTap: () {
                 Get.to(() => SearchScreen());
