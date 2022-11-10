@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todo_jbc/common/get_screen_height_width.dart';
 import 'package:todo_jbc/common/widgets/horizontal_space.dart';
 import 'package:todo_jbc/common/widgets/vertical_space.dart';
 import 'package:todo_jbc/features/landing/widgets/add_todo_dialog.dart';
+import 'package:todo_jbc/features/search/search_screen.dart';
 import 'package:todo_jbc/utils/app_colors.dart';
 
 import '../widgets/todo_list_widget.dart';
@@ -17,9 +19,12 @@ class LandingScren extends StatefulWidget {
 
 class _LandingScrenState extends State<LandingScren> {
   TextEditingController todoController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           "JBC Todo",
@@ -37,7 +42,7 @@ class _LandingScrenState extends State<LandingScren> {
           showDialog(
               context: context,
               builder: (BuildContext context) {
-                return showTodoDialog(context, todoController);
+                return showTodoDialog(context, todoController, _formKey);
               });
         },
         label: const Text("Add Task"),
@@ -50,18 +55,23 @@ class _LandingScrenState extends State<LandingScren> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           children: [
             VerticalSpace(height: getHeight(context) * 2),
-            Container(
-              padding: EdgeInsets.all(getHeight(context) * 2),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.grey.shade300,
-              ),
-              child: Row(
-                children: const [
-                  Icon(Icons.search),
-                  HorizontalSpace(width: 10),
-                  Text("Search in your todos"),
-                ],
+            InkWell(
+              onTap: () {
+                Get.to(() => SearchScreen());
+              },
+              child: Container(
+                padding: EdgeInsets.all(getHeight(context) * 2),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.grey.shade300,
+                ),
+                child: Row(
+                  children: const [
+                    Icon(Icons.search),
+                    HorizontalSpace(width: 10),
+                    Text("Search in your todos"),
+                  ],
+                ),
               ),
             ),
             const VerticalSpace(height: 30),

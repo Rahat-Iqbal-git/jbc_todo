@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:todo_jbc/common/get_screen_height_width.dart';
+import 'package:todo_jbc/common/widgets/horizontal_space.dart';
 import 'package:todo_jbc/common/widgets/vertical_space.dart';
+import 'package:todo_jbc/features/landing/controller/todo_controller.dart';
 import 'package:todo_jbc/features/landing/widgets/select_color_widget.dart';
 import 'package:todo_jbc/utils/app_colors.dart';
 
@@ -17,14 +21,16 @@ class TodoDetailsScreen extends StatefulWidget {
 }
 
 class _TodoDetailsScreenState extends State<TodoDetailsScreen> {
-  final TextEditingController todo = TextEditingController();
-
+  final TextEditingController titleField = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  TodoController todoController = Get.put(TodoController());
 
   @override
   void initState() {
     super.initState();
-    todo.text = widget.todoData['title'];
+    titleField.text = widget.todoData['title'];
+    todoController.setSelectedColor(widget.todoData['color']);
+    todoController.setIsComplete(widget.todoData['isDone']);
   }
 
   @override
@@ -62,7 +68,7 @@ class _TodoDetailsScreenState extends State<TodoDetailsScreen> {
             ),
             const VerticalSpace(height: 10),
             TextFormField(
-              controller: todo,
+              controller: titleField,
               // maxLines: 3,
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
@@ -91,44 +97,44 @@ class _TodoDetailsScreenState extends State<TodoDetailsScreen> {
             SelectColorWidget(),
             //
             const VerticalSpace(height: 10),
-            Align(
-              alignment: Alignment.topLeft,
-              child: TextButton.icon(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.check,
-                  color: Colors.green,
-                ),
-                label: widget.todoData['isDone'] == false
-                    ? const Text(
-                        "Mark as complete",
-                        style: TextStyle(
-                          color: Colors.green,
-                        ),
-                      )
-                    : const Text(
-                        "Mark as incomplete",
-                        style: TextStyle(
-                          color: Colors.green,
-                        ),
+            Row(
+              children: [
+                widget.todoData['isDone'] == true
+                    ? const Text("Task Completed")
+                    : const Text("Task Incomplete"),
+                const HorizontalSpace(width: 10),
+                Obx(() {
+                  return Align(
+                    alignment: Alignment.topLeft,
+                    child: TextButton.icon(
+                      onPressed: () {
+                        todoController.isComplete.toggle();
+                        log(todoController.isComplete.value.toString());
+                      },
+                      icon: const Icon(
+                        Icons.check,
+                        color: Colors.green,
                       ),
-              ),
+                      label: todoController.isComplete.value == false
+                          ? const Text(
+                              "Mark as complete",
+                              style: TextStyle(
+                                color: Colors.green,
+                              ),
+                            )
+                          : const Text(
+                              "Mark as incomplete",
+                              style: TextStyle(
+                                color: Colors.green,
+                              ),
+                            ),
+                    ),
+                  );
+                }),
+              ],
             ),
-            VerticalSpace(height: getHeight(context) * 4),
-            // Container(
-            //   // width: getWidth(context) * 50,
-            //   padding: EdgeInsets.symmetric(horizontal: getWidth(context) * 4),
-            //   child: ElevatedButton.icon(
-            //     onPressed: () {},
-            //     style: ElevatedButton.styleFrom(
-            //         backgroundColor: themeColor.withOpacity(0.7),
-            //         elevation: 0,
-            //         shape: const StadiumBorder()),
-            //     icon: const Icon(Icons.save),
-            //     label: const Text("Save"),
-            //   ),
-            // ),
-            // const VerticalSpace(height: 10),
+            const VerticalSpace(height: 83),
+
             SizedBox(
               width: getWidth(context) * 85,
               child: Row(
@@ -136,8 +142,17 @@ class _TodoDetailsScreenState extends State<TodoDetailsScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     width: getWidth(context) * 38,
+                    height: getHeight(context) * 4.5,
                     child: OutlinedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        FirebaseFirestore.instance
+                            .collection('todos')
+                            .doc(widget.todoData.id)
+                            .delete()
+                            .then((value) {
+                          Get.back();
+                        });
+                      },
                       style: OutlinedButton.styleFrom(
                           // backgroundColor: themeColor.withOpacity(0.5),
                           foregroundColor: themeColor.withOpacity(0.5),
@@ -150,10 +165,29 @@ class _TodoDetailsScreenState extends State<TodoDetailsScreen> {
                   ),
                   Container(
                     width: getWidth(context) * 53,
+                    height: getHeight(context) * 4.5,
                     padding:
                         EdgeInsets.symmetric(horizontal: getWidth(context) * 4),
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          FirebaseFirestore.instance
+                              .collection('todos')
+                              .doc(widget.todoData.id)
+                              .update({
+                            'title': titleField.text,
+                            'color': todoController.selectedColor.value,
+                            'isDone': todoController.isComplete.value,
+                          }).then(
+                            (value) {
+                              Get.back();
+                              Fluttertoast.showToast(
+                                msg: "Todo updated",
+                              );
+                            },
+                          );
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: themeColor.withOpacity(0.7),
                           elevation: 0,

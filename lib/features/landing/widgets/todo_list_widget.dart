@@ -16,7 +16,10 @@ class TodoListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("todos").snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection("todos")
+            .orderBy('isDone', descending: false)
+            .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(
@@ -32,6 +35,14 @@ class TodoListWidget extends StatelessWidget {
                       SlidableAction(
                         onPressed: (context) {
                           log("Subarna");
+                          bool data = !temp['isDone'];
+                          log(data.toString());
+                          FirebaseFirestore.instance
+                              .collection('todos')
+                              .doc(temp.id)
+                              .update({
+                            'isDone': data,
+                          });
                         },
                         backgroundColor: Colors.grey.shade50,
                         foregroundColor: temp!['isDone'] == false
@@ -66,7 +77,10 @@ class TodoListWidget extends StatelessWidget {
                       minLeadingWidth: 30,
                       title: Text(
                         "${temp['title']}",
-                        style: const TextStyle(
+                        style: TextStyle(
+                          decoration: temp['isDone'] == true
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
                           color: Colors.black87,
                           fontWeight: FontWeight.w500,
                         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_jbc/common/get_screen_height_width.dart';
-import 'package:todo_jbc/features/landing/controller/select_color_controller.dart';
+import 'package:todo_jbc/features/landing/controller/todo_controller.dart';
 import 'package:todo_jbc/utils/app_colors.dart';
 
 class SelectColorWidget extends StatelessWidget {
@@ -9,8 +9,7 @@ class SelectColorWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final SelectColorController selectColorController =
-      Get.put(SelectColorController());
+  final TodoController todoController = Get.put(TodoController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class SelectColorWidget extends StatelessWidget {
   Widget _selectColorWidget(Color color, int value) {
     return InkWell(
       onTap: () {
-        selectColorController.setSelectedColor(value);
+        todoController.setSelectedColor(value);
       },
       child: Obx(() {
         return Container(
@@ -43,7 +42,7 @@ class SelectColorWidget extends StatelessWidget {
             shape: BoxShape.circle,
             color: color,
           ),
-          child: selectColorController.selectedColor.value == value
+          child: todoController.selectedColor.value == value
               ? const Icon(
                   Icons.check,
                   color: Colors.white,
