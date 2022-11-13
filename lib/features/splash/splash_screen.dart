@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
@@ -20,14 +21,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    log(box.read('showOnBoardScreen').toString());
     Timer(const Duration(seconds: 4), () {
-      if (box.read('showOnboardScreen') == true) {
+      // changed here for onboard feature
+      if (box.read('showOnboardScreen') == null) {
+        log("from" + box.read('showOnBoardScreen').toString());
+
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (BuildContext context) => OnboardScreen(),
           ),
         );
       } else {
+        log("from" + box.read('showOnBoardScreen').toString());
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (BuildContext context) => const LandingScren(),

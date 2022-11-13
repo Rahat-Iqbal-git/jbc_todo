@@ -87,6 +87,8 @@ showTodoDialog(
                   colorValue: todo.selectedColor.value,
                   title: todoController.text,
                   context: context);
+              // clears text field value
+              todoController.clear();
             }
           },
           child: const Text('Add'),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_onboard/flutter_onboard.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:todo_jbc/common/get_screen_height_width.dart';
+import 'package:todo_jbc/features/landing/screen/landing_screen.dart';
 import 'package:todo_jbc/features/onboard/functions/save_onboard_getstorage.dart';
 import 'package:todo_jbc/utils/app_colors.dart';
 
@@ -76,7 +78,9 @@ class OnboardScreen extends StatelessWidget {
         //
         skipButton: TextButton(
           onPressed: () {
+            // for onboard feature
             saveOnboardGetstorage();
+            Get.offAll(() => LandingScren());
           },
           child: const Text(
             "Skip",
@@ -101,6 +105,10 @@ class OnboardScreen extends StatelessWidget {
         curve: Curves.easeInOutSine,
       );
     } else {
+      // for onboard feature
+
+      saveOnboardGetstorage();
+      Get.offAll(() => LandingScren());
       //print("nextButton pressed");
     }
   }

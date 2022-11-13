@@ -8,7 +8,6 @@ import 'package:todo_jbc/features/landing/widgets/add_todo_dialog.dart';
 import 'package:todo_jbc/features/search/search_screen.dart';
 import 'package:todo_jbc/utils/app_colors.dart';
 
-import '../widgets/greetings_widget.dart';
 import '../widgets/todo_list_widget.dart';
 
 class LandingScren extends StatefulWidget {
